@@ -1,0 +1,1304 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EL LUX — Каталог товаров (сетка с фильтрами)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Luxury Color Palette */
+    :root {
+      /* Основные цвета */
+      --ivory: #F7F6F3;
+      --white: #FFFFFF;
+      --deep: #0E2F28;
+      --pistachio: #B7DEC0;
+      --gold: #C9B37E;
+      
+      /* Текстовые цвета */
+      --text-main: #1A1A1A;
+      --text-muted: #6F6F6F;
+      --text-soft: #8C8C8C;
+      
+      /* Границы и линии */
+      --border-light: rgba(14, 47, 40, 0.12);
+      --border-gold: rgba(201, 179, 126, 0.35);
+      --border-pistachio: rgba(183, 222, 192, 0.3);
+      
+      /* Тени */
+      --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.06);
+      --shadow-medium: 0 15px 40px rgba(0, 0, 0, 0.08);
+      --shadow-card: 0 8px 24px rgba(14, 47, 40, 0.05);
+      --shadow-hover: 0 20px 50px rgba(14, 47, 40, 0.1);
+      
+      /* Скругления */
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --radius-pill: 24px;
+    }
+    
+    * {box-sizing:border-box;margin:0;padding:0;}
+    body {font-family:Inter,system-ui,Arial;background:var(--ivory);color:var(--text-main);line-height:1.6;}
+    
+    /* Hero Section - Luxury Header */
+    .hero {
+      background: linear-gradient(180deg, rgba(14, 47, 40, 0.98), rgba(14, 47, 40, 0.95)), 
+                  url('assets/images/photo_1.jpeg') center/cover no-repeat;
+      padding: 48px 20px 32px;
+      color: var(--white);
+      position: relative;
+      border-bottom: 1px solid var(--border-gold);
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, transparent 0%, rgba(201, 179, 126, 0.03) 100%);
+      pointer-events: none;
+    }
+    
+    .container {max-width:1200px;margin:0 auto;padding:0 20px;}
+    
+    .hero-header {
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      margin-bottom:28px;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .logo-container {flex:1;}
+    .logo {
+      font-family:Playfair Display,serif;
+      font-size:32px;
+      font-weight:600;
+      letter-spacing:1.8px;
+      display:inline-block;
+      margin-bottom:16px;
+      color:var(--white);
+      text-decoration:none;
+      position: relative;
+      padding-bottom: 8px;
+    }
+    
+    .logo::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 2px;
+      background: var(--gold);
+      border-radius: 1px;
+    }
+    
+    .hero h1 {
+      margin:0 0 12px;
+      font-size:28px;
+      font-weight:500;
+      letter-spacing:0.5px;
+    }
+    
+    .hero p {
+      margin:0 0 20px;
+      opacity:0.9;
+      font-size:16px;
+      font-weight:300;
+      max-width: 600px;
+      line-height: 1.7;
+    }
+    
+    /* Hero Buttons */
+    .hero-buttons {
+      display:flex;
+      gap:16px;
+      margin-top:12px;
+    }
+    
+    .back-btn,.all-products-btn {
+      background:transparent;
+      color:var(--white);
+      border:1.5px solid var(--border-gold);
+      padding:14px 24px;
+      border-radius:var(--radius-pill);
+      font-weight:500;
+      cursor:pointer;
+      display:inline-block;
+      text-decoration:none;
+      transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      white-space:nowrap;
+      font-size:15px;
+      letter-spacing:0.3px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    
+    .back-btn:hover,.all-products-btn:not(.active):hover {
+      background:var(--gold);
+      color:var(--deep);
+      border-color:var(--gold);
+      transform:translateY(-2px);
+      box-shadow: 0 8px 20px rgba(201, 179, 126, 0.2);
+    }
+    
+    .all-products-btn.active {
+      background:var(--gold);
+      color:var(--deep);
+      border-color:var(--gold);
+      font-weight:600;
+    }
+    
+    /* Search Section */
+    .search-section {
+      padding: 32px 0 24px;
+      text-align: center;
+      position: relative;
+    }
+    
+    .search-container {
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+    }
+    
+    .search-label {
+      position: absolute;
+      left: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 15px;
+      font-weight: 400;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      z-index: 2;
+    }
+    
+    .search-input:focus + .search-label,
+    .search-input:not(:placeholder-shown) + .search-label {
+      opacity: 0;
+      visibility: hidden;
+    }
+    
+    .search-input {
+      width: 100%;
+      padding: 18px 60px 18px 24px;
+      border: 1.5px solid var(--border-light);
+      border-radius: var(--radius-pill);
+      font-size: 16px;
+      font-family: 'Inter', sans-serif;
+      background: var(--white);
+      color: var(--text-main);
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-light);
+    }
+    
+    .search-input:focus {
+      outline: none;
+      border-color: var(--pistachio);
+      box-shadow: 0 0 0 3px rgba(183, 222, 192, 0.15), var(--shadow-medium);
+    }
+    
+    .search-input::placeholder {
+      color: transparent;
+    }
+    
+    .search-icon {
+      position: absolute;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      background: transparent;
+      border: 1.5px solid var(--text-soft);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      z-index: 3;
+    }
+    
+    .search-input:focus + .search-label + .search-icon {
+      border-color: var(--pistachio);
+    }
+    
+    .search-icon::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 1.5px;
+      background: var(--text-soft);
+      transform: rotate(45deg);
+      top: 14px;
+      right: -4px;
+      border-radius: 1px;
+      transition: all 0.3s ease;
+    }
+    
+    .search-input:focus + .search-label + .search-icon::after {
+      background: var(--pistachio);
+    }
+    
+    /* Filters Section */
+    .filters {
+      padding: 32px 0;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      border-bottom: 1px solid var(--border-light);
+      margin-bottom: 32px;
+      justify-content: center;
+      transition: all 0.3s ease;
+      opacity: 1;
+      visibility: visible;
+      height: auto;
+    }
+    
+    .filters.hidden {
+      opacity: 0;
+      visibility: hidden;
+      height: 0;
+      padding: 0;
+      margin-bottom: 0;
+      border-bottom: none;
+    }
+    
+    .filter-btn {
+      background: var(--white);
+      color: var(--deep);
+      border: 1.5px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 180px;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: left;
+    }
+    
+    .filter-btn:hover,.filter-btn.active {
+      background: var(--white);
+      color: var(--deep);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--border-pistachio);
+    }
+    
+    .filter-btn.active {
+      border-color: var(--pistachio);
+      box-shadow: 0 0 0 2px rgba(183, 222, 192, 0.2), var(--shadow-hover);
+    }
+    
+    .filter-btn-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .filter-icon {
+      font-size: 36px;
+      margin-bottom: 16px;
+      opacity: 0.9;
+      transition: all 0.3s ease;
+    }
+    
+    .filter-btn:hover .filter-icon,
+    .filter-btn.active .filter-icon {
+      transform: scale(1.1);
+    }
+    
+    .filter-text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .filter-title {
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 6px;
+      color: var(--deep);
+    }
+    
+    .filter-desc {
+      font-size: 13px;
+      color: var(--text-soft);
+      text-align: center;
+      line-height: 1.4;
+      font-weight: 400;
+    }
+    
+    /* Products Grid */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 28px;
+      padding: 32px 0;
+    }
+    
+    .product-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--border-light);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+    
+    .product-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-pistachio), transparent);
+      z-index: 1;
+    }
+    
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--border-pistachio);
+    }
+    
+    .product-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+      border-bottom: 1px solid var(--border-light);
+      transition: all 0.3s ease;
+    }
+    
+    .product-card:hover img {
+      transform: scale(1.02);
+    }
+    
+    .product-info {
+      padding: 24px;
+    }
+    
+    .product-category {
+      display: inline-block;
+      background: transparent;
+      color: var(--deep);
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 12px;
+      border: 1px solid var(--border-light);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+    
+    .product-card:hover .product-category {
+      border-color: var(--pistachio);
+      background: rgba(183, 222, 192, 0.05);
+    }
+    
+    .product-title {
+      font-weight: 600;
+      font-size: 18px;
+      margin-bottom: 12px;
+      color: var(--deep);
+      line-height: 1.4;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .product-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      line-height: 1.6;
+      font-weight: 400;
+    }
+    
+    .product-price {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--deep);
+      margin-bottom: 20px;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .product-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    
+    /* Primary Button */
+    .btn-details {
+      background: var(--deep);
+      color: var(--white);
+      padding: 14px 20px;
+      border-radius: var(--radius-md);
+      border: none;
+      font-weight: 500;
+      cursor: pointer;
+      flex: 1;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 14px;
+      letter-spacing: 0.3px;
+      min-width: 120px;
+    }
+    
+    .btn-details:hover {
+      background: var(--gold);
+      color: var(--deep);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(201, 179, 126, 0.2);
+    }
+    
+    /* Secondary Luxury Button */
+    .btn-whatsapp {
+      background: transparent;
+      border: 1.5px solid var(--deep);
+      color: var(--deep);
+      padding: 14px 20px;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      cursor: pointer;
+      flex: 1;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 14px;
+      letter-spacing: 0.3px;
+      min-width: 120px;
+    }
+    
+    .btn-whatsapp:hover {
+      background: var(--deep);
+      color: var(--white);
+      transform: translateY(-2px);
+    }
+    
+    /* Search Results Info */
+    .search-results-info {
+      text-align: center;
+      margin: 16px 0 24px;
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 400;
+      padding: 12px 20px;
+      background: rgba(183, 222, 192, 0.08);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-pistachio);
+      display: none;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    
+    /* WhatsApp Footer Button */
+    .whatsapp-footer {
+      display: block;
+      margin: 40px auto 30px;
+      max-width: 500px;
+      background: var(--deep);
+      color: var(--white);
+      padding: 20px;
+      border-radius: var(--radius-lg);
+      text-align: center;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1.5px solid var(--deep);
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .whatsapp-footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: all 0.6s ease;
+    }
+    
+    .whatsapp-footer:hover {
+      background: var(--gold);
+      color: var(--deep);
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(201, 179, 126, 0.2);
+      border-color: var(--gold);
+    }
+    
+    .whatsapp-footer:hover::before {
+      left: 100%;
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--deep);
+      color: var(--white);
+      padding: 24px;
+      text-align: center;
+      margin-top: 40px;
+      border-top: 1px solid var(--border-gold);
+      font-size: 14px;
+      font-weight: 300;
+      letter-spacing: 0.3px;
+    }
+    
+    /* Modal Overlay */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.92);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    
+    .modal-overlay.active {
+      display: flex;
+      animation: fadeIn 0.2s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .modal-content {
+      background: var(--ivory);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 1000px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 40px;
+      position: relative;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4),
+                  0 0 0 1px var(--border-gold),
+                  0 0 60px rgba(183, 222, 192, 0.1);
+      animation: zoomIn 0.2s ease;
+    }
+    
+    @keyframes zoomIn {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--deep);
+      color: var(--white);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      z-index: 1001;
+      box-shadow: 0 4px 15px rgba(14, 47, 40, 0.3);
+      border: 1px solid var(--border-gold);
+    }
+    
+    .modal-close:hover {
+      background: var(--gold);
+      color: var(--deep);
+      transform: rotate(90deg);
+    }
+    
+    .modal-title {
+      font-family: Playfair Display, serif;
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--deep);
+      margin-bottom: 24px;
+      text-align: center;
+      letter-spacing: 0.5px;
+      position: relative;
+      padding-bottom: 16px;
+    }
+    
+    .modal-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      border-radius: 1px;
+    }
+    
+    .modal-gallery {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    
+    @media (max-width: 768px) {
+      .modal-gallery { grid-template-columns: 1fr; }
+    }
+    
+    .modal-image {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-light);
+    }
+    
+    .modal-image:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-medium);
+      border-color: var(--border-gold);
+    }
+    
+    .modal-description {
+      background: var(--white);
+      padding: 28px;
+      border-radius: var(--radius-md);
+      margin-bottom: 28px;
+      border-left: 3px solid var(--gold);
+      box-shadow: var(--shadow-light);
+    }
+    
+    .modal-description h3 {
+      color: var(--deep);
+      margin-bottom: 16px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+    
+    .modal-components {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    
+    .component-item {
+      background: rgba(183, 222, 192, 0.1);
+      color: var(--deep);
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      text-align: center;
+      border: 1px solid var(--border-pistachio);
+      transition: all 0.3s ease;
+    }
+    
+    .component-item:hover {
+      background: rgba(183, 222, 192, 0.15);
+      transform: translateY(-2px);
+    }
+    
+    .modal-price {
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--deep);
+      text-align: center;
+      margin: 28px 0;
+      padding: 24px;
+      background: var(--white);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-light);
+      border: 1px solid var(--border-light);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+      .container { max-width: 100%; }
+    }
+    
+    @media (max-width: 992px) {
+      .filter-btn { width: 160px; height: 130px; }
+      .modal-content { padding: 32px; }
+    }
+    
+    @media (max-width: 768px) {
+      .hero { padding: 36px 20px 24px; }
+      .hero-header { flex-direction: column; gap: 20px; }
+      .hero-buttons { width: 100%; justify-content: flex-start; }
+      .search-label { font-size: 14px; left: 20px; }
+      .search-input { padding: 16px 50px 16px 20px; }
+      .filter-btn { width: 140px; height: 120px; padding: 20px; }
+      .filter-icon { font-size: 32px; margin-bottom: 12px; }
+      .filter-title { font-size: 15px; }
+      .filter-desc { font-size: 12px; }
+      .products-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+      .modal-content { padding: 24px; }
+      .modal-title { font-size: 28px; }
+    }
+    
+    @media (max-width: 576px) {
+      .filters { gap: 12px; }
+      .filter-btn { width: calc(50% - 12px); height: 110px; padding: 16px; }
+      .filter-btn-content { flex-direction: row; gap: 12px; }
+      .filter-icon { margin-bottom: 0; font-size: 28px; flex-shrink: 0; }
+      .filter-text { align-items: flex-start; }
+      .filter-desc { text-align: left; font-size: 11px; }
+      .hero-buttons { flex-wrap: wrap; }
+      .back-btn,.all-products-btn { flex: 1; min-width: 140px; text-align: center; }
+      .products-grid { grid-template-columns: 1fr; gap: 24px; }
+      .product-actions { flex-direction: column; }
+      .btn-details,.btn-whatsapp { width: 100%; }
+    }
+    
+    /* Detail View Overlay */
+    .detail-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .detail-overlay.active {
+      display: flex;
+      animation: detailFadeIn 0.2s ease;
+    }
+    
+    @keyframes detailFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .detail-image {
+      max-width: 90%;
+      max-height: 80%;
+      object-fit: contain;
+      border-radius: var(--radius-md);
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.8);
+      animation: detailZoomIn 0.2s ease;
+    }
+    
+    @keyframes detailZoomIn {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    
+    .detail-close {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--white);
+      border: 1px solid var(--border-gold);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 28px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      z-index: 2001;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    
+    .detail-close:hover {
+      background: var(--gold);
+      color: var(--deep);
+      transform: rotate(90deg);
+    }
+    
+    .image-counter {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.7);
+      color: var(--white);
+      padding: 10px 25px;
+      border-radius: var(--radius-pill);
+      font-size: 15px;
+      font-weight: 500;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--border-gold);
+    }
+    
+    .image-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--white);
+      border: 1px solid var(--border-gold);
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      z-index: 2002;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    
+    .image-nav:hover {
+      background: var(--gold);
+      color: var(--deep);
+      transform: translateY(-50%) scale(1.1);
+    }
+    
+    .nav-prev { left: 30px; }
+    .nav-next { right: 30px; }
+    
+    .nav-prev::after {
+      content: '‹';
+      font-size: 32px;
+      font-weight: 300;
+    }
+    
+    .nav-next::after {
+      content: '›';
+      font-size: 32px;
+      font-weight: 300;
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <div class="hero-header">
+        <div class="logo-container">
+          <a href="index.html" class="logo">EL LUX</a>
+          <h1>Каталог товаров — все категории</h1>
+          <p>Все товары EL LUX в одной сетке. Используйте фильтры для быстрого поиска.</p>
+        </div>
+        <div class="hero-buttons">
+          <a href="index.html" class="back-btn">← На главную</a>
+          <button class="all-products-btn active" id="showAllProducts">Все товары</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Поиск -->
+    <section class="search-section">
+      <div class="search-container">
+        <input type="text" id="searchInput" class="search-input" placeholder=" ">
+        <div class="search-label">Поиск по каталогу</div>
+        <div class="search-icon"></div>
+      </div>
+      <div id="searchResultsInfo" class="search-results-info"></div>
+    </section>
+    
+    <!-- Фильтры -->
+    <section class="filters" id="filters">
+      <button class="filter-btn" data-category="servizy">
+        <div class="filter-btn-content">
+          <div class="filter-icon">🍽️</div>
+          <div class="filter-text">
+            <div class="filter-title">Сервизы</div>
+            <div class="filter-desc">Полные наборы 24+ предметов</div>
+          </div>
+        </div>
+      </button>
+      <button class="filter-btn" data-category="tea">
+        <div class="filter-btn-content">
+          <div class="filter-icon">🫖</div>
+          <div class="filter-text">
+            <div class="filter-title">Чайные наборы</div>
+            <div class="filter-desc">Чайники, чашки, аксессуары</div>
+          </div>
+        </div>
+      </button>
+      <button class="filter-btn" data-category="glasses">
+        <div class="filter-btn-content">
+          <div class="filter-icon">🥂</div>
+          <div class="filter-text">
+            <div class="filter-title">Бокалы</div>
+            <div class="filter-desc">Для вина, шампанского, коктейлей</div>
+          </div>
+        </div>
+      </button>
+      <button class="filter-btn" data-category="accessories">
+        <div class="filter-btn-content">
+          <div class="filter-icon">✨</div>
+          <div class="filter-text">
+            <div class="filter-title">Аксессуары</div>
+            <div class="filter-desc">Подставки, сервировочные элементы</div>
+          </div>
+        </div>
+      </button>
+    </section>
+
+    <!-- Товары -->
+    <section class="products-grid" id="products">
+      <article class="product-card" data-category="servizy" data-search="Амелия сервиз фарфор позолота 24 предмета">
+        <img src="https://images.unsplash.com/photo-1594046243099-15ad6d7e86f7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Сервиз Амелия">
+        <div class="product-info">
+          <span class="product-category">Сервизы</span>
+          <h3 class="product-title">Сервиз "Амелия" — 24 предмета</h3>
+          <p class="product-desc">Фарфоровый сервиз с позолоченной окантовкой. В комплекте: 6 тарелок, 6 суповых мисок, 6 салатников, 6 чашек с блюдцами.</p>
+          <div class="product-price">24 900 ₽</div>
+          <div class="product-actions">
+            <button class="btn-details" data-modal="amelia-details">Подробнее</button>
+            <a href="https://wa.me/79899208113?text=Здравствуйте, интересует сервиз 'Амелия'" target="_blank" class="btn-whatsapp">WhatsApp</a>
+          </div>
+        </div>
+      </article>
+      
+      <article class="product-card" data-category="servizy" data-search="Нева сервиз классический белый 36 предметов торжество">
+        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Сервиз Нева">
+        <div class="product-info">
+          <span class="product-category">Сервизы</span>
+          <h3 class="product-title">Сервиз "Нева" — 36 предметов</h3>
+          <p class="product-desc">Классический белый сервиз с рельефным орнаментом. Полный комплект для торжеств на 12 персон.</p>
+          <div class="product-price">38 500 ₽</div>
+          <div class="product-actions">
+            <button class="btn-details" data-modal="neva-details">Подробнее</button>
+            <a href="https://wa.me/79899208113?text=Здравствуйте, интересует сервиз 'Нева'" target="_blank" class="btn-whatsapp">WhatsApp</a>
+          </div>
+        </div>
+      </article>
+      
+      <article class="product-card" data-category="tea" data-search="Verde чайный набор керамика зеленая глазурь 12 предметов">
+        <img src="https://images.unsplash.com/photo-1592420500678-7fc8ef6c0c25?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Чайный набор Verde">
+        <div class="product-info">
+          <span class="product-category">Чайные наборы</span>
+          <h3 class="product-title">Чайный набор "Verde" — 12 предметов</h3>
+          <p class="product-desc">Керамический чайный набор с зелёной глазурью. В комплекте: чайник, 6 чашек, 6 блюдец.</p>
+          <div class="product-price">14 800 ₽</div>
+          <div class="product-actions">
+            <button class="btn-details" data-modal="verde-details">Подробнее</button>
+            <a href="https://wa.me/79899208113?text=Здравствуйте, интересует чайный набор 'Verde'" target="_blank" class="btn-whatsapp">WhatsApp</a>
+          </div>
+        </div>
+      </article>
+      
+      <article class="product-card" data-category="glasses" data-search="бокалы вино хрусталь набор 6 красное белое">
+        <img src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Бокалы для вина">
+        <div class="product-info">
+          <span class="product-category">Бокалы</span>
+          <h3 class="product-title">Бокалы для вина — набор 6</h3>
+          <p class="product-desc">Хрустальные бокалы для красного и белого вина. Высота 22 см, объём 450 мл.</p>
+          <div class="product-price">8 900 ₽</div>
+          <div class="product-actions">
+            <button class="btn-details" data-modal="glasses-details">Подробнее</button>
+            <a href="https://wa.me/79899208113?text=Здравствуйте, интересуют бокалы для вина" target="_blank" class="btn-whatsapp">WhatsApp</a>
+          </div>
+        </div>
+      </article>
+      
+      <article class="product-card" data-category="accessories" data-search="подставка сервировка дерево 40x60 натуральное">
+        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Подставка для сервировки">
+        <div class="product-info">
+          <span class="product-category">Аксессуары</span>
+          <h3 class="product-title">Подставка для сервировки</h3>
+          <p class="product-desc">Деревянная подставка для сервировки стола. Размер 40×60 см, натуральное дерево.</p>
+          <div class="product-price">5 500 ₽</div>
+          <div class="product-actions">
+            <button class="btn-details" data-modal="stand-details">Подробнее</button>
+            <a href="https://wa.me/79899208113?text=Здравствуйте, интересует подставка для сервировки" target="_blank" class="btn-whatsapp">WhatsApp</a>
+          </div>
+        </div>
+      </article>
+      
+      <article class="product-card" data-category="servizy" data-search="Империал сервиз роскошный кобальт золото 32 предмета">
+        <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Сервиз Империал">
+        <div class="product-info">
+          <span class="product-category">Сервизы</span>
+          <h3 class="product-title">Сервиз "Империал" — 32 предмета</h3>
+          <p class="product-desc">Роскошный сервиз с кобальтовой росписью и золотым декором. Для особых случаев и презентаций.</p>
+          <div class="product-price">52 000 ₽</div>
+          <div class="product-actions">
+            <button class="btn-details" data-modal="imperial-details">Подробнее</button>
+            <a href="https://wa.me/79899208113?text=Здравствуйте, интересует сервиз 'Империал'" target="_blank" class="btn-whatsapp">WhatsApp</a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <a class="whatsapp-footer" href="https://wa.me/79899208113?text=Здравствуйте, хочу узнать о всех товарах El Lux" target="_blank" rel="noopener">
+      📞 ЗАКАЗАТЬ КОНСУЛЬТАЦИЮ ПО ВСЕМ ТОВАРАМ В WHATSAPP
+    </a>
+  </main>
+
+  <div class="modal-overlay" id="amelia-details-modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('amelia-details-modal')">×</button>
+      <h2 class="modal-title">Сервиз "Амелия" — полный комплект</h2>
+      <div class="modal-gallery">
+        <img src="https://images.unsplash.com/photo-1594046243099-15ad6d7e86f7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Чашки и блюдца" class="modal-image" onclick="openDetailView(0)">
+        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Тарелки" class="modal-image" onclick="openDetailView(1)">
+      </div>
+      <div class="modal-description">
+        <h3>Полный состав сервиза "Амелия" (24 предмета):</h3>
+        <div class="modal-components">
+          <div class="component-item">6 кружек 200 мл</div>
+          <div class="component-item">6 глубоких суповых мисок 400 мл</div>
+          <div class="component-item">6 салатников</div>
+          <div class="component-item">4 большие тарелки</div>
+          <div class="component-item">1 сахарница с крышкой</div>
+          <div class="component-item">1 молочник</div>
+        </div>
+        <p style="margin-top:20px;color:var(--text-muted);">Сервиз изготовлен из высококачественного фарфора с позолоченной окантовкой. Каждый предмет украшен изящным цветочным орнаментом в классическом стиле. Идеально подходит для торжественных обедов и семейных праздников.</p>
+      </div>
+      <div class="modal-price">Полная стоимость комплекта: 24 900 ₽</div>
+      <div style="text-align:center;margin-top:32px;">
+        <a href="https://wa.me/79899208113?text=Здравствуйте, хочу заказать сервиз 'Амелия'" target="_blank" class="btn-whatsapp" style="display:inline-block;padding:16px 32px;font-size:16px;background:var(--deep);color:var(--white);border:none;">
+          Заказать в WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-overlay" id="detail-overlay">
+    <button class="detail-close" onclick="closeDetailView()">×</button>
+    <button class="image-nav nav-prev" onclick="changeDetailImage(-1)"></button>
+    <button class="image-nav nav-next" onclick="changeDetailImage(1)"></button>
+    <img id="detail-img" class="detail-image" alt="Детальное изображение">
+    <div class="image-counter" id="image-counter">1 из 2</div>
+  </div>
+
+  <footer>© EL LUX — Контакты: +7 989 920-81-13 • Instagram @ellux • Каталог 2025</footer>
+
+  <script>
+    // Массив изображений для детального просмотра
+    const detailImages = [
+      'https://images.unsplash.com/photo-1594046243099-15ad6d7e86f7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80',
+      'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80'
+    ];
+    let currentDetailIndex = 0;
+    
+    // Функция для открытия детального просмотра
+    function openDetailView(index) {
+      currentDetailIndex = index;
+      document.getElementById('detail-img').src = detailImages[index];
+      document.getElementById('image-counter').textContent = `${index + 1} из ${detailImages.length}`;
+      document.getElementById('detail-overlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    // Функция для закрытия детального просмотра
+    function closeDetailView() {
+      document.getElementById('detail-overlay').classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+    
+    // Функция для навигации по изображениям
+    function changeDetailImage(direction) {
+      currentDetailIndex = (currentDetailIndex + direction + detailImages.length) % detailImages.length;
+      document.getElementById('detail-img').src = detailImages[currentDetailIndex];
+      document.getElementById('image-counter').textContent = `${currentDetailIndex + 1} из ${detailImages.length}`;
+    }
+    
+    // Фильтрация товаров
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const products = document.querySelectorAll('.product-card');
+    const showAllProductsBtn = document.getElementById('showAllProducts');
+    const searchInput = document.getElementById('searchInput');
+    const searchResultsInfo = document.getElementById('searchResultsInfo');
+    const filtersSection = document.getElementById('filters');
+    
+    // Функция для сброса всех фильтров и показа всех товаров
+    function showAllProducts() {
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      showAllProductsBtn.classList.add('active');
+      products.forEach(product => product.style.display = 'block');
+      searchInput.value = '';
+      searchResultsInfo.style.display = 'none';
+      filtersSection.classList.remove('hidden');
+    }
+    
+    // Инициализация - показать все товары при загрузке
+    showAllProducts();
+    
+    // Обработчик для кнопки "Все товары"
+    showAllProductsBtn.addEventListener('click', showAllProducts);
+    
+    // Обработчики для кнопок фильтров
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        showAllProductsBtn.classList.remove('active');
+        button.classList.add('active');
+        const category = button.dataset.category;
+        products.forEach(product => {
+          product.style.display = product.dataset.category === category ? 'block' : 'none';
+        });
+        searchInput.value = '';
+        searchResultsInfo.style.display = 'none';
+        filtersSection.classList.remove('hidden');
+      });
+    });
+    
+    // Функция поиска товаров
+    function performSearch() {
+      const searchTerm = searchInput.value.toLowerCase().trim();
+      
+      // Скрываем фильтры, если есть текст поиска
+      if (searchTerm.length > 0) {
+        filtersSection.classList.add('hidden');
+      } else {
+        filtersSection.classList.remove('hidden');
+      }
+      
+      if (searchTerm === '') {
+        // Если поиск пустой, показываем все товары текущего фильтра
+        const activeFilter = document.querySelector('.filter-btn.active');
+        if (activeFilter) {
+          const category = activeFilter.dataset.category;
+          products.forEach(product => {
+            product.style.display = product.dataset.category === category ? 'block' : 'none';
+          });
+        } else {
+          products.forEach(product => product.style.display = 'block');
+        }
+        searchResultsInfo.style.display = 'none';
+        return;
+      }
+      
+      // Снимаем активные фильтры при поиске
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      showAllProductsBtn.classList.remove('active');
+      
+      let foundCount = 0;
+      
+      products.forEach(product => {
+        const searchData = product.dataset.search.toLowerCase();
+        const title = product.querySelector('.product-title').textContent.toLowerCase();
+        const desc = product.querySelector('.product-desc').textContent.toLowerCase();
+        const category = product.querySelector('.product-category').textContent.toLowerCase();
+        
+        if (searchData.includes(searchTerm) || 
+            title.includes(searchTerm) || 
+            desc.includes(searchTerm) || 
+            category.includes(searchTerm)) {
+          product.style.display = 'block';
+          foundCount++;
+        } else {
+          product.style.display = 'none';
+        }
+      });
+      
+      // Показываем информацию о результатах поиска
+      if (foundCount > 0) {
+        searchResultsInfo.textContent = `Найдено товаров: ${foundCount} по запросу "${searchTerm}"`;
+        searchResultsInfo.style.display = 'block';
+      } else {
+        searchResultsInfo.textContent = `По запросу "${searchTerm}" товаров не найдено`;
+        searchResultsInfo.style.display = 'block';
+      }
+    }
+    
+    // Обработчик поиска при вводе
+    searchInput.addEventListener('input', performSearch);
+    
+    // Очистка поиска при клике на кнопки фильтров или "Все товары"
+    document.querySelectorAll('.filter-btn, #showAllProducts').forEach(btn => {
+      btn.addEventListener('click', () => {
+        searchInput.value = '';
+        searchResultsInfo.style.display = 'none';
+        filtersSection.classList.remove('hidden');
+      });
+    });
+    
+    // Функции для модальных окон
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+    
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+      }
+    }
+    
+    // Обработчики для кнопок "Подробнее"
+    document.querySelectorAll('.btn-details').forEach(button => {
+      button.addEventListener('click', function() {
+        const modalId = this.getAttribute('data-modal') + '-modal';
+        openModal(modalId);
+      });
+    });
+    
+    // Закрытие модального окна при клике на оверлей
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+      modal.addEventListener('click', function(e) {
+        if (e.target === this) closeModal(this.id);
+      });
+    });
+    
+    // Закрытие детального просмотра при клике на оверлей
+    document.getElementById('detail-overlay').addEventListener('click', function(e) {
+      if (e.target === this) closeDetailView();
+    });
+    
+    // Закрытие по клавише Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay.active').forEach(modal => closeModal(modal.id));
+        closeDetailView();
+      }
+      // Навигация по детальным изображениям с помощью клавиш
+      const detailOverlay = document.getElementById('detail-overlay');
+      if (detailOverlay.classList.contains('active')) {
+        if (e.key === 'ArrowLeft') changeDetailImage(-1);
+        else if (e.key === 'ArrowRight') changeDetailImage(1);
+      }
+    });
+  </script>
+</body>
+</html>

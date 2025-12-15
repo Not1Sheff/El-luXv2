@@ -1,0 +1,291 @@
+
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EL LUX — Сервизы</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pistachio: #C6EBCB;
+      --deep: #042820;
+      --black: #0A0A0A;
+      --gold: #D4AF37;
+      --white: #FFFFFF;
+      --radius: 14px;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: Inter, system-ui, Arial;
+      background: var(--white);
+      color: var(--black);
+      line-height: 1.6;
+    }
+    /* Header */
+    .hero {
+      background: linear-gradient(180deg, rgba(4, 40, 32, 0.95), rgba(4, 40, 32, 0.95)), url('assets/images/photo_1.jpeg') center/cover no-repeat;
+      padding: 36px 20px 24px;
+      color: var(--white);
+      position: relative;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .logo {
+      font-family: Playfair Display, serif;
+      font-size: 28px;
+      letter-spacing: 1.5px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 24px;
+    }
+    .hero p {
+      margin: 0 0 16px;
+      opacity: 0.95;
+      font-size: 15px;
+    }
+    .back-btn {
+      background: transparent;
+      color: var(--pistachio);
+      border: 2px solid var(--pistachio);
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-block;
+      text-decoration: none;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    .back-btn:hover {
+      background: var(--pistachio);
+      color: var(--deep);
+    }
+    /* Товары */
+    .products {
+      padding: 24px 20px;
+    }
+    .products h2 {
+      font-family: Playfair Display, serif;
+      font-size: 26px;
+      margin-bottom: 20px;
+      color: var(--deep);
+    }
+    .product-list {
+      display: grid;
+      gap: 20px;
+    }
+    @media(min-width: 768px) {
+      .product-list {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .product-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(2, 10, 8, 0.08);
+      border: 1px solid rgba(3, 3, 3, 0.02);
+      transition: transform 0.3s ease;
+    }
+    .product-card:hover {
+      transform: scale(1.02);
+    }
+    .product-card img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      display: block;
+    }
+    .product-info {
+      padding: 18px;
+    }
+    .product-title {
+      font-weight: 700;
+      font-size: 18px;
+      margin-bottom: 8px;
+      color: var(--deep);
+    }
+    .product-desc {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 12px;
+    }
+    .product-price {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--deep);
+      margin-bottom: 16px;
+    }
+    .product-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn-details {
+      background: var(--deep);
+      color: var(--pistachio);
+      padding: 12px 18px;
+      border-radius: 10px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      flex: 1;
+      text-align: center;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+    .btn-details:hover {
+      background: var(--gold);
+      color: var(--deep);
+    }
+    .btn-whatsapp {
+      background: var(--black);
+      color: var(--pistachio);
+      padding: 12px 18px;
+      border-radius: 10px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      flex: 1;
+      text-align: center;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+    .btn-whatsapp:hover {
+      background: #25D366;
+    }
+    /* WhatsApp CTA */
+    .whatsapp-footer {
+      display: block;
+      margin: 30px auto 20px;
+      max-width: 500px;
+      background: var(--black);
+      color: var(--pistachio);
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+      text-decoration: none;
+      font-weight: 700;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+    .whatsapp-footer:hover {
+      background: var(--gold);
+      color: var(--deep);
+      transform: scale(1.03);
+    }
+    /* Footer */
+    footer {
+      background: var(--black);
+      color: var(--pistachio);
+      padding: 18px;
+      text-align: center;
+      margin-top: 30px;
+      border-top: 4px solid var(--pistachio);
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <a href="index.html" class="logo">EL LUX</a>
+      <h1>Сервизы — Коллекция 2025</h1>
+      <p>Фарфоровые и керамические сервизы для повседневных обедов и торжественных приёмов. Полные комплекты от 12 до 36 предметов.</p>
+      <a href="index.html" class="back-btn">← На главную</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="products">
+      <h2>Все сервизы</h2>
+      <div class="product-list">
+        <!-- Сервиз 1 -->
+        <article class="product-card">
+          <img src="https://i.ibb.co/ccWS8CYY/IMG-6244.jpg" alt="Сервиз Амелия">
+          <div class="product-info">
+            <h3 class="product-title">Сервиз "Амелия" — 24 предмета</h3>
+            <p class="product-desc">Фарфоровый сервиз с позолоченной окантовкой. В комплекте: 6 тарелок, 6 суповых мисок, 6 салатников, 6 чашек с блюдцами.</p>
+            <div class="product-price">24 900 ₽</div>
+            <div class="product-actions">
+              <a href="#amelia-details" class="btn-details">Подробнее</a>
+              <a href="https://wa.me/7XXXXXXXXXX?text=Здравствуйте, интересует сервиз 'Амелия'" target="_blank" class="btn-whatsapp">WhatsApp</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Сервиз 2 -->
+        <article class="product-card">
+          <img src="https://i.ibb.co/ccWS8CYY/IMG-6244.jpg" alt="Сервиз Нева">
+          <div class="product-info">
+            <h3 class="product-title">Сервиз "Нева" — 36 предметов</h3>
+            <p class="product-desc">Классический белый сервиз с рельефным орнаментом. Полный комплект для торжеств на 12 персон.</p>
+            <div class="product-price">38 500 ₽</div>
+            <div class="product-actions">
+              <a href="#neva-details" class="btn-details">Подробнее</a>
+              <a href="https://wa.me/7XXXXXXXXXX?text=Здравствуйте, интересует сервиз 'Нева'" target="_blank" class="btn-whatsapp">WhatsApp</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Сервиз 3 -->
+        <article class="product-card">
+          <img src="https://i.ibb.co/ccWS8CYY/IMG-6244.jpg" alt="Сервиз Бирюза">
+          <div class="product-info">
+            <h3 class="product-title">Сервиз "Бирюза" — 18 предметов</h3>
+            <p class="product-desc">Современный дизайн с бирюзовой глазурью. Идеален для кофейных и чайных церемоний.</p>
+            <div class="product-price">19 800 ₽</div>
+            <div class="product-actions">
+              <a href="#biruza-details" class="btn-details">Подробнее</a>
+              <a href="https://wa.me/7XXXXXXXXXX?text=Здравствуйте, интересует сервиз 'Бирюза'" target="_blank" class="btn-whatsapp">WhatsApp</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Сервиз 4 -->
+        <article class="product-card">
+          <img src="https://i.ibb.co/ccWS8CYY/IMG-6244.jpg" alt="Сервиз Империал">
+          <div class="product-info">
+            <h3 class="product-title">Сервиз "Империал" — 32 предмета</h3>
+            <p class="product-desc">Роскошный сервиз с кобальтовой росписью и золотым декором. Для особых случаев и презентаций.</p>
+            <div class="product-price">52 000 ₽</div>
+            <div class="product-actions">
+              <a href="#imperial-details" class="btn-details">Подробнее</a>
+              <a href="https://wa.me/7XXXXXXXXXX?text=Здравствуйте, интересует сервиз 'Империал'" target="_blank" class="btn-whatsapp">WhatsApp</a>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <a class="whatsapp-footer" href="https://wa.me/7XXXXXXXXXX?text=Здравствуйте, хочу узнать о всех сервизах El Lux" target="_blank" rel="noopener">
+        📞 ЗАКАЗАТЬ КОНСУЛЬТАЦИЮ ПО ВСЕЙ КОЛЛЕКЦИИ В WHATSAPP
+      </a>
+    </section>
+  </main>
+
+  <footer>
+    © EL LUX — Контакты: +7 (XXX) XXX-XX-XX • Instagram @ellux • Сервизы 2025
+  </footer>
+
+  <script>
+    // Плавный скролл к деталям товара
+    document.querySelectorAll('.btn-details').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
